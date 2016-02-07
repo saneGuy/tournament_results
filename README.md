@@ -19,7 +19,7 @@ matches among the players with same number of wins to get a champion.
 	the python files are located
 
 
-**Note:** Make sure all the files are in the same directory
+**Note:** Make sure all the files are in the same directory. 
 To use the code from these modules just import the module into your code and use the functions.
 
 
