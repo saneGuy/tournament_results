@@ -20,11 +20,8 @@ matches among the players with same number of wins to get a champion.
 
 
 **Note:** Make sure all the files are in the same directory
-To use the code from these modules:
-import the module tournament into your code and use the functions.
-tournamet.py is the main module with all the required functions.
-tournament_test.py contains unit tests to test all the functions in the
-tournament module.
+To use the code from these modules just import the module into your code and use the functions.
+
 
 
 
