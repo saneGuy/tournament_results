@@ -10,7 +10,7 @@ matches among the players with same number of wins to get a champion.
 	* tournament.py
 	* tournament.sql
 	* tournament_test.py
-* bring your virtual machine up by running the following commands:
+* Bring your virtual machine up by running the following commands:
 	* vagrant up 
 	* vagrant ssh
 * Run psql -f tournament.sql to create the database and tables
@@ -20,11 +20,12 @@ matches among the players with same number of wins to get a champion.
 
 
 **Note:** Make sure all the files are in the same directory
-
+To use the code from these modules:
+import the module tournament into your code and use the functions.
 tournamet.py is the main module with all the required functions.
 tournament_test.py contains unit tests to test all the functions in the
 tournament module.
-import the module tournament into your code and use the functions.
+
 
 
 ## Prerequisites for running 
