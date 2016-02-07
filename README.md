@@ -1,7 +1,7 @@
 # Tournament Results
-Here we use a relational database PostgreSQL to store information of the 
+Here we use a relational database PostgreSQL to store information about the 
 players, matches played, and use this stored information to schedule 
-matches among the player with same number of wins to get a champion.
+matches among the players with same number of wins to get a champion.
 
 
 ## Getting Started
