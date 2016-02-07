@@ -33,7 +33,8 @@ To use the code from these modules just import the module into your code and use
 *  **tournamet.py**  contains all the functions to connect to the database,
 delete matches, delete players, count players, register player, current player
 standings, report match between two players, swisPairings to return a list of 
-pairs of players for scheduling matches.
+pairs of players for scheduling matches. Here we will make sure there is no
+rematch between two players.
 *  **tournament_test.py** contains functions to test each function defined in 
 the tournament module.
 *  **tournament.sql** is the database setup file that creates the required tournament
