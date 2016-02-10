@@ -117,7 +117,7 @@ def testPairings():
     reportMatch(id1, id2)
     reportMatch(id3, id4)
     # inserting a match between players who played already
-    # reportMatch(id4, id3)
+    reportMatch(id4, id3)
     pairings = swissPairings()
     if len(pairings) != 2:
         raise ValueError(
