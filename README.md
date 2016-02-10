@@ -1,7 +1,7 @@
 # Tournament Results
-Here we use a relational database PostgreSQL to store information of the 
+Here we use a relational database PostgreSQL to store information about the 
 players, matches played, and use this stored information to schedule 
-matches among the player with same number of wins to get a champion.
+matches among the players with same number of wins to get a champion.
 
 
 ## Getting Started
@@ -10,7 +10,7 @@ matches among the player with same number of wins to get a champion.
 	* tournament.py
 	* tournament.sql
 	* tournament_test.py
-* bring your virtual machine up by running the following commands:
+* Bring your virtual machine up by running the following commands:
 	* vagrant up 
 	* vagrant ssh
 * Run psql -f tournament.sql to create the database and tables
@@ -19,12 +19,10 @@ matches among the player with same number of wins to get a champion.
 	the python files are located
 
 
-**Note:** Make sure all the files are in the same directory
+**Note:** Make sure all the files are in the same directory. 
+To use the code from these modules just import the module into your code and use the functions.
 
-tournamet.py is the main module with all the required functions.
-tournament_test.py contains unit tests to test all the functions in the
-tournament module.
-import the module tournament into your code and use the functions.
+
 
 
 ## Prerequisites for running 
@@ -35,7 +33,8 @@ import the module tournament into your code and use the functions.
 *  **tournamet.py**  contains all the functions to connect to the database,
 delete matches, delete players, count players, register player, current player
 standings, report match between two players, swisPairings to return a list of 
-pairs of players for scheduling matches.
+pairs of players for scheduling matches. Here we will make sure there is no
+rematch between two players.
 *  **tournament_test.py** contains functions to test each function defined in 
 the tournament module.
 *  **tournament.sql** is the database setup file that creates the required tournament
