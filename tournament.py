@@ -8,16 +8,18 @@ import psycopg2
 
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
+    try:
+        db = psycopg2.connect("dbname=tournament")
+        cursor = db.cursor()
+        return db, cursor
+    except:
+        print("Unable to connect to tournament database")
 
 
 def deleteMatches():
     """Remove all the match records from the database."""
     # connect to the tournament database
-    conn = connect()
-    # get the cursor and execute the query
-    # delete from matches; deletes all the records from matches
-    cur = conn.cursor()
+    conn, cur = connect()
     cur.execute("delete from matches;")
     # commit the change to the database
     conn.commit()
@@ -28,10 +30,7 @@ def deleteMatches():
 def deletePlayers():
     """Remove all the player records from the database."""
     # connect to the tournament database
-    conn = connect()
-    # get the cursor and execute the query
-    # delete from players; deletes all the records from players
-    cur = conn.cursor()
+    conn, cur = connect()
     cur.execute("delete from players;")
     # commit the change to the database
     conn.commit()
@@ -42,17 +41,13 @@ def deletePlayers():
 def countPlayers():
     """Returns the number of players currently registered."""
     # connect to the tournament database
-    conn = connect()
-    # get the cursor and execute the query
-    # select count(*) from players; will count the number of tuples
-    # in players table
-    cur = conn.cursor()
+    conn, cur = connect()
     cur.execute("select count(*) from players;")
     # fetch all the tuples from the cursor
-    results = cur.fetchall()
+    results = cur.fetchone()[0]
     # close the connection
     conn.close()
-    return results[0][0]
+    return results
 
 
 def registerPlayer(name):
@@ -65,12 +60,8 @@ def registerPlayer(name):
       name: the player's full name (need not be unique).
     """
     # connect to the tournament database
-    conn = connect()
-    # get the cursor and execute the query
-    # The query will insert a row with id, name, wins, matches for
-    # a single player
-    cur = conn.cursor()
-    cur.execute("insert into players(name, wins, matches) values(%s,0,0)",
+    conn, cur = connect()
+    cur.execute("insert into players(name) values(%s)",
                 (name,))
     # commit the change to the database
     conn.commit()
@@ -92,12 +83,14 @@ def playerStandings():
         matches: the number of matches the player has played
     """
     # connect to the tournament database
-    conn = connect()
-    # get the cursor and execute the query
+    conn, cur = connect()
     # The query will fetch tuples from players table sorted by number of wins
     # in descending order of wins
-    cur = conn.cursor()
-    cur.execute("select * from players order by wins desc;")
+    cur.execute("select players.id, players.name, (select count(*) as wins\
+      from matches where players.id = matches.winner), (select count(*) as\
+      matches from matches where players.id = matches.winner or \
+      players.id = matches.loser) from players left join  matches on  \
+      players.id = matches.winner group by players.id order by wins;")
     # Fetch all the tuples from the cursor
     results = cur.fetchall()
     # close the connection
@@ -113,26 +106,19 @@ def reportMatch(winner, loser):
       loser:  the id number of the player who lost
     """
     # connect to the tournament database
-    conn = connect()
-    # get the cursor and execute the query
+    conn, cur = connect()
     # fetch all the tuples into playersInMatches list
-    cur = conn.cursor()
-    cur.execute("select player1, player2 from matches")
+    cur.execute("select winner, loser from matches")
     playersInMatches = cur.fetchall()
     # check whether (winner,loser) or (loser, winner) tuple exists in the
     # playersInMatches list of tuples if any such tuple exists we should
     # not insert a row in matches table as there won't be a second match
     # between any two players
-    if (winner, loser) not in playersInMatches and (loser, winner) not in playersInMatches:
-            cur.execute("insert into matches (player1, player2, winner, loser)\
-                         values(%s,%s,%s,%s)", (winner, loser, winner, loser))
-            cur.execute("update players set wins = wins + 1 where id = %s ;",
-                        (winner, ))
-            cur.execute("update players set matches = matches + 1 where \
-                        id = %s ;", (winner, ))
-            cur.execute("update players set matches = matches + 1 where \
-                        id = %s ;", (loser, ))
-    # commit the changes to database
+    if (winner, loser) not in playersInMatches and (loser, winner) not in\
+            playersInMatches:
+        cur.execute("insert into matches (winner, loser)\
+                     values(%s,%s)", (winner, loser))
+    # commit the changeges to database
     conn.commit()
     # close the database connection
     conn.close()

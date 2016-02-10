@@ -14,11 +14,9 @@ create database tournament;
 -- connect to the tournament database
 \c tournament;
 
--- create players table that contains player id, name, number of matches won,
--- number of matches played
-create table players(id serial PRIMARY KEY, name varchar(50), wins int, matches int);
+-- create players table that contains player id, name
+create table players(id serial PRIMARY KEY, name varchar(50));
 
--- create matches table that contains match id, player1 id, player2 id, 
--- winner id, loser id
-create table matches(id serial PRIMARY KEY, player1 int references players(id), player2 int references players(id), winner int references players(id), loser int references players(id));
+-- create matches table that contains match id, winner id, loser id
+create table matches(id serial PRIMARY KEY, winner int references players(id), loser int references players(id));
 
